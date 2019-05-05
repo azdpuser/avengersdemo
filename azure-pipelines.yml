@@ -92,5 +92,9 @@ steps:
     command: package
     chartPath: '**/charts/gs-rest-service'
 
-- script: az acr helm push -n $(registryName) $(build.artifactStagingDirectory)/$(imageName)-*.tgz --force
+- task: AzureCLI@1
   displayName: 'Helm Push'
+  inputs:
+    azureSubscription: 'azurecr-sc'
+    scriptLocation: 'inlineScript'
+    inlineScript: 'az acr helm push -n $(registryName) $(build.artifactStagingDirectory)/$(imageName)-*.tgz --force'
