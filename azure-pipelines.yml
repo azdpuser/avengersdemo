@@ -9,6 +9,10 @@ trigger:
 pool:
   vmImage: 'ubuntu-latest'
 
+variables:
+  dockerId: avengersx  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
+  imageName: gs-rest-service  # Replace with the name of the image you want to publish
+  
 steps:
 - script: echo Hello, world!
   displayName: 'Run a one-line script'
@@ -29,3 +33,11 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
+    
+- script: |
+    displayName: 'Build & push docker files to Azure Container Registry'
+    docker build -t $(dockerId).azurecr.io/$(imageName) -f '$(system.defaultWorkingDirectory)/gs-rest-service/dockerfile' .
+    docker login -u $(dockerId) -p $(pswd) $(dockerId).azurecr.io
+    docker push $(dockerId).azurecr.io/$(imageName)
+  env:
+    pswd: $(dockerPassword)        # Define dockerPassword in the Variables tab of this pipeline in Pipelines page of web interface
