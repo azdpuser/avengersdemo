@@ -1,0 +1,9 @@
+version: "0"
+services:
+  web:
+    build:
+        context: .
+    image: gs-rest-service
+    ports:
+      - 8080
+    restart: always
