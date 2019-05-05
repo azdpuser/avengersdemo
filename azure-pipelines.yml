@@ -10,9 +10,11 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  dockerId: 'avengersx'  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
-  servicePrincipalId : 'b784cc8a-6e5d-4bec-af6f-b97de7335ee7'
-  imageName: 'gs-rest-service'  # Replace with the name of the image you want to publish
+  imageName: 'gs-rest-service'
+  imageTag: '$(build.buildId)'
+  fullImageName: '$(imageName):$(imageTag)'
+  containerRegistry: 'avengersx.azurecr.io'
+  serviceConnection: 'azurecr-sc'
   
 steps:
 - script: echo Hello, world!
@@ -47,10 +49,12 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-- script: |
-    displayName: 'Build & push docker files to Azure Container Registry'
-    docker build -t $(dockerId).azurecr.io/$(imageName) -f '$(system.defaultWorkingDirectory)/gs-rest-service/dockerfile' .
-    docker login -u $(servicePrincipalId) -p $(pswd) $(dockerId).azurecr.io
-    docker push $(dockerId).azurecr.io/$(imageName)
-  env:
-    pswd: $(dockerPassword)        # Define dockerPassword in the Variables tab of this pipeline in Pipelines page of web interface
+steps:
+- task: Docker@1
+  displayName: 'Containerize the application'
+  inputs:
+    azureSubscriptionEndpoint: $(serviceConnection)
+    azureContainerRegistry: $(containerRegistry)
+    dockerFile: '**/gs-rest-service/Dockerfile'
+    imageName: '$(fullImageName)'
+    includeLatestTag: true
