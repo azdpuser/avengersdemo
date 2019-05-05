@@ -57,3 +57,19 @@ steps:
     dockerFile: '**/gs-rest-service/dockerfile'
     imageName: '$(fullImageName)'
     includeLatestTag: true
+
+- task: Docker@1
+  displayName: 'Push image'
+  inputs:
+    azureSubscriptionEndpoint: $(serviceConnection)
+    azureContainerRegistry: $(containerRegistry)
+    command: 'Push an image'
+    imageName: '$(fullImageName)'
+ 
+- task: Docker@1
+  displayName: 'Push latest image'
+  inputs:
+    azureSubscriptionEndpoint: $(serviceConnection)
+    azureContainerRegistry: $(containerRegistry)
+    command: 'Push an image'
+    imageName: '$(imageName):latest'
