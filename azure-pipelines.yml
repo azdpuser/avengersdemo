@@ -83,17 +83,6 @@ steps:
     helmVersionToInstall: '2.13.0'
 
 - task: HelmDeploy@0
-  displayName: Helm init
-  inputs:
-    azureSubscriptionEndpoint: $(k8sServiceConnection)
-    azureResourceGroup: $(k8sResourceGroup)
-    kubernetesCluster: $(k8sCluster)
-    command: init
-    upgradetiller: true
-    waitForExecution: true
-    arguments: --client-only
-
-- task: HelmDeploy@0
   inputs:
     connectionType: Azure Resource Manager
     azureSubscriptionEndpoint: $(k8sServiceConnection)
