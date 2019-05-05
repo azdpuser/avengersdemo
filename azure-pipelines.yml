@@ -83,10 +83,19 @@ steps:
     helmVersionToInstall: '2.13.0'
 
 - task: HelmDeploy@0
-  displayName: helm package
+  displayName: Helm Package
   inputs:
     azureSubscriptionEndpoint: $(k8sServiceConnection)
     azureResourceGroup: $(k8sResourceGroup)
     kubernetesCluster: $(k8sCluster)
     command: package
     chartPath: '**/charts/gs-rest-service'
+    
+- task: HelmDeploy@0
+  displayName: Helm Push
+  inputs:
+    azureSubscriptionEndpoint: $(k8sServiceConnection)
+    azureResourceGroup: $(k8sResourceGroup)
+    kubernetesCluster: $(k8sCluster)
+    command: push
+    arguments: '-n $(containerRegistry) $(Build.ArtifactStagingDirectory)/*.tgz --force'
