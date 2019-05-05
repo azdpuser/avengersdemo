@@ -32,9 +32,8 @@ steps:
 
 - task: DockerCompose@0
   inputs:
-    containerregistrytype: 'Azure Container Registry'
-    azureSubscription: 'Free Trial(369357ef-288d-4815-84ba-70584847f8c1)'
-    azureContainerRegistry: '{"loginServer":"avengersx.azurecr.io", "id" : "/subscriptions/369357ef-288d-4815-84ba-70584847f8c1/resourceGroups/avengersx/providers/Microsoft.ContainerRegistry/registries/avengersx"}'
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'avengersx-acs'
     dockerComposeFile: '$(system.defaultWorkingDirectory)/gs-rest-service/docker-compose.yml'
     action: 'Build services'
     additionalImageTags: '$(Build.BuildNumber)'
