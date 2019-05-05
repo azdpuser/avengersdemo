@@ -34,6 +34,18 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(system.defaultWorkingDirectory)/gs-rest-service/build/libs/'
+    Contents: '*.jar'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - script: |
     displayName: 'Build & push docker files to Azure Container Registry'
     docker build -t $(dockerId).azurecr.io/$(imageName) -f '$(system.defaultWorkingDirectory)/gs-rest-service/dockerfile' .
