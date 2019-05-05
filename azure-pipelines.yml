@@ -90,12 +90,6 @@ steps:
     kubernetesCluster: $(k8sCluster)
     command: package
     chartPath: '**/charts/gs-rest-service'
-    
-- task: HelmDeploy@0
-  displayName: Helm Push
-  inputs:
-    azureSubscriptionEndpoint: $(k8sServiceConnection)
-    azureResourceGroup: $(k8sResourceGroup)
-    kubernetesCluster: $(k8sCluster)
-    command: push
-    arguments: '-n $(containerRegistry) $(Build.ArtifactStagingDirectory)/*.tgz --force'
+
+- script: az acr helm push -n $(containerRegistry) $(build.artifactStagingDirectory)/$(projectName)-$(build.buildId).tgz --force
+  displayName: 'Helm Push'
