@@ -49,7 +49,6 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-steps:
 - task: Docker@1
   displayName: 'Containerize the application'
   inputs:
