@@ -30,8 +30,12 @@ steps:
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
 
-- task: PublishBuildArtifacts@1
+- task: DockerCompose@0
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
-    ArtifactName: 'drop'
-    publishLocation: 'Container'
+    containerregistrytype: 'Azure Container Registry'
+    azureSubscription: 'Free Trial(369357ef-288d-4815-84ba-70584847f8c1)'
+    azureContainerRegistry: '{"loginServer":"avengersx.azurecr.io", "id" : "/subscriptions/369357ef-288d-4815-84ba-70584847f8c1/resourceGroups/avengersx/providers/Microsoft.ContainerRegistry/registries/avengersx"}'
+    dockerComposeFile: '$(system.defaultWorkingDirectory)/gs-rest-service/docker-compose.yml'
+    action: 'Build services'
+    additionalImageTags: '$(Build.BuildNumber)'
+    currentWorkingDirectory: '$(System.DefaultWorkingDirectory)/gs-rest-service'
