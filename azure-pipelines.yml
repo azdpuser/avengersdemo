@@ -14,6 +14,10 @@ steps:
   displayName: 'Run a one-line script'
 
 - script: |
+    echo Add other tasks to build, test, and deploy your project.
+    echo See https://aka.ms/yaml
+  displayName: 'Run a multi-line script'
+
 - task: Gradle@2
   inputs:
     gradleWrapperFile: 'gradlew'
@@ -24,6 +28,3 @@ steps:
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
     sonarQubeRunAnalysis: false
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
