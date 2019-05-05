@@ -10,8 +10,9 @@ pool:
   vmImage: 'ubuntu-latest'
 
 variables:
-  dockerId: avengersx  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
-  imageName: gs-rest-service  # Replace with the name of the image you want to publish
+  dockerId: 'avengersx'  # Replace with your Docker ID for Docker Hub or the admin user name for the Azure Container Registry
+  servicePrincipalId : 'b784cc8a-6e5d-4bec-af6f-b97de7335ee7'
+  imageName: 'gs-rest-service'  # Replace with the name of the image you want to publish
   
 steps:
 - script: echo Hello, world!
@@ -33,23 +34,23 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
-<<<<<<< HEAD
-    
+
+- task: CopyFiles@2
+  inputs:
+    SourceFolder: '$(system.defaultWorkingDirectory)/gs-rest-service/build/libs/'
+    Contents: '*.jar'
+    TargetFolder: '$(Build.ArtifactStagingDirectory)'
+
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
+
 - script: |
     displayName: 'Build & push docker files to Azure Container Registry'
     docker build -t $(dockerId).azurecr.io/$(imageName) -f '$(system.defaultWorkingDirectory)/gs-rest-service/dockerfile' .
-    docker login -u $(dockerId) -p $(pswd) $(dockerId).azurecr.io
+    docker login -u $(servicePrincipalId) -p $(pswd) $(dockerId).azurecr.io
     docker push $(dockerId).azurecr.io/$(imageName)
   env:
     pswd: $(dockerPassword)        # Define dockerPassword in the Variables tab of this pipeline in Pipelines page of web interface
-=======
-
-- task: DockerCompose@0
-  inputs:
-    containerregistrytype: 'Container Registry'
-    dockerRegistryEndpoint: 'avengersx-acs'
-    dockerComposeFile: '$(system.defaultWorkingDirectory)/gs-rest-service/docker-compose.yml'
-    action: 'Build services'
-    additionalImageTags: '$(Build.BuildNumber)'
-    currentWorkingDirectory: '$(System.DefaultWorkingDirectory)/gs-rest-service'
->>>>>>> eec5fdc91ede81e447ca97365cff6a454e4cf67d
