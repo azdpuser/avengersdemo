@@ -13,6 +13,7 @@ variables:
   imageName: 'gs-rest-service'
   imageTag: '$(build.buildId)'
   fullImageName: '$(imageName):$(imageTag)'
+  registryName: 'avengersx'
   containerRegistry: 'avengersx.azurecr.io'
   acrServiceConnection: 'azurecr-sc'
   k8sServiceConnection: 'avengersx-aks-sc'
@@ -91,10 +92,5 @@ steps:
     command: package
     chartPath: '**/charts/gs-rest-service'
 
-- task: AzureCLI@1
-  inputs:
-    azureSubscription: $(acrServiceConnection)
-    scriptLocation: 'inlineScript'
-    inlineScript: 'az acr helm push -n $(containerRegistry) $(build.artifactStagingDirectory)/$(projectName)-$(build.buildId).tgz --force'
+- script: az acr helm push -n $(registryName) $(build.artifactStagingDirectory)/$(imageName)-*.tgz --force
   displayName: 'Helm Push'
-
