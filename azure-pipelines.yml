@@ -49,12 +49,11 @@ steps:
     ArtifactName: 'drop'
     publishLocation: 'Container'
 
-steps:
 - task: Docker@1
   displayName: 'Containerize the application'
   inputs:
     azureSubscriptionEndpoint: $(serviceConnection)
     azureContainerRegistry: $(containerRegistry)
-    dockerFile: '**/gs-rest-service/Dockerfile'
+    dockerFile: '**/gs-rest-service/dockerfile'
     imageName: '$(fullImageName)'
     includeLatestTag: true
