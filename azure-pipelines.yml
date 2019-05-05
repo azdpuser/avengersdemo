@@ -33,6 +33,7 @@ steps:
     publishJUnitResults: false
     testResultsFiles: '**/TEST-*.xml'
     tasks: 'build'
+<<<<<<< HEAD
     
 - script: |
     displayName: 'Build & push docker files to Azure Container Registry'
@@ -41,3 +42,14 @@ steps:
     docker push $(dockerId).azurecr.io/$(imageName)
   env:
     pswd: $(dockerPassword)        # Define dockerPassword in the Variables tab of this pipeline in Pipelines page of web interface
+=======
+
+- task: DockerCompose@0
+  inputs:
+    containerregistrytype: 'Container Registry'
+    dockerRegistryEndpoint: 'avengersx-acs'
+    dockerComposeFile: '$(system.defaultWorkingDirectory)/gs-rest-service/docker-compose.yml'
+    action: 'Build services'
+    additionalImageTags: '$(Build.BuildNumber)'
+    currentWorkingDirectory: '$(System.DefaultWorkingDirectory)/gs-rest-service'
+>>>>>>> eec5fdc91ede81e447ca97365cff6a454e4cf67d
