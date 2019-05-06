@@ -11,8 +11,7 @@ image:
 
 service:
   type: ClusterIP
-  externalPort: 8080
-  internalPort: 8080
+  port: 8080
  
 ingress:
   enabled: false
