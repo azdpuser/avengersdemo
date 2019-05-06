@@ -11,7 +11,8 @@ image:
 
 service:
   type: ClusterIP
-  port: 8080
+  externalPort: 8080
+  internalPort: 8080
  
 ingress:
   enabled: false
@@ -27,7 +28,7 @@ ingress:
   #    hosts:
   #      - chart-example.local
 
-resources: {}
+resources:
   limits:
     cpu: 100m
     memory: 128Mi
