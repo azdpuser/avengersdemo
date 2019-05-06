@@ -9,11 +9,23 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
+readinessProbe:
+  httpGet:
+    path: /greeting
+    port: 8080
+
+livenessProbe:
+  httpGet:
+    path: /greeting
+    port: 8080
+  initialDelaySeconds: 60
+  timeoutSeconds: 30
+  failureThreshold: 10
+
 service:
-  name: nginx
-  type: NodePort
-  externalPort: 8080
-  internalPort: 8080
+  type: ClusterIP
+  port: 8080
+  targetPort: 8080
  
 ingress:
   enabled: false
