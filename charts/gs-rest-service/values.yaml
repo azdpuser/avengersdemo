@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: $(imageName)
+  repository: 'avengersx/gs-rest-service'
   tag: latest
   pullPolicy: IfNotPresent
 
