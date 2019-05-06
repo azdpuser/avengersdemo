@@ -10,8 +10,10 @@ image:
   pullPolicy: IfNotPresent
 
 service:
-  type: ClusterIP
-  port: 8080
+  name: nginx
+  type: NodePort
+  externalPort: 8080
+  internalPort: 8080
  
 ingress:
   enabled: false
