@@ -5,7 +5,7 @@
 replicaCount: 1
 
 image:
-  repository: 'avengersx/gs-rest-service'
+  repository: 'avengersx.azurecr.io/gs-rest-service'
   tag: latest
   pullPolicy: IfNotPresent
 
