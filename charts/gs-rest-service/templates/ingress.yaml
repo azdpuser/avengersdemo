@@ -1,12 +1,12 @@
 {{- if .Values.ingress.enabled -}}
-{{- $fullName := include "av-demo.fullname" . -}}
+{{- $fullName := include "gs-rest-service.fullname" . -}}
 apiVersion: extensions/v1beta1
 kind: Ingress
 metadata:
   name: {{ $fullName }}
   labels:
-    app.kubernetes.io/name: {{ include "av-demo.name" . }}
-    helm.sh/chart: {{ include "av-demo.chart" . }}
+    app.kubernetes.io/name: {{ include "gs-rest-service.name" . }}
+    helm.sh/chart: {{ include "gs-rest-service.chart" . }}
     app.kubernetes.io/instance: {{ .Release.Name }}
     app.kubernetes.io/managed-by: {{ .Release.Service }}
   {{- with .Values.ingress.annotations }}
