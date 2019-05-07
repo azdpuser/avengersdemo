@@ -12,19 +12,21 @@ image:
 readinessProbe:
   httpGet:
     path: /greeting
-    port: 8080
+    port: 9090
 
 livenessProbe:
   httpGet:
     path: /greeting
-    port: 8080
+    port: 9090
   initialDelaySeconds: 60
   timeoutSeconds: 30
   failureThreshold: 10
 
 service:
-  type: ClusterIP
-  port: 8080
+  type: NodePort
+  port: 9090
+  nodePort: 9090
+  targetPort: 9090
 
 ingress:
   enabled: true
