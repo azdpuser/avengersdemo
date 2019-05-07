@@ -9,24 +9,9 @@ image:
   tag: latest
   pullPolicy: IfNotPresent
 
-readinessProbe:
-  httpGet:
-    path: /greeting
-    port: 9090
-
-livenessProbe:
-  httpGet:
-    path: /greeting
-    port: 9090
-  initialDelaySeconds: 60
-  timeoutSeconds: 30
-  failureThreshold: 10
-
 service:
   type: NodePort
-  port: 9090
-  nodePort: 9090
-  targetPort: 9090
+  port: 80
 
 ingress:
   enabled: true
