@@ -1,51 +1,30 @@
-apiVersion: apps/v1
+apiVersion: apps/v1beta1
 kind: Deployment
 metadata:
-  name: {{ include "gs-rest-service.fullname" . }}
-  labels:
-    app.kubernetes.io/name: {{ include "gs-rest-service.name" . }}
-    helm.sh/chart: {{ include "gs-rest-service.chart" . }}
-    app.kubernetes.io/instance: {{ .Release.Name }}
-    app.kubernetes.io/managed-by: {{ .Release.Service }}
+  name: gs-rest-service-{{.Release.Name}}
 spec:
-  replicas: {{ .Values.replicaCount }}
-  selector:
-    matchLabels:
-      app.kubernetes.io/name: {{ include "gs-rest-service.name" . }}
-      app.kubernetes.io/instance: {{ .Release.Name }}
+  replicas: 1
   template:
     metadata:
       labels:
-        app.kubernetes.io/name: {{ include "gs-rest-service.name" . }}
-        app.kubernetes.io/instance: {{ .Release.Name }}
+        app: gs-rest-service-{{.Release.Name}}
     spec:
       containers:
-        - name: {{ .Chart.Name }}
-          image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
-          imagePullPolicy: {{ .Values.image.pullPolicy }}
-          ports:
-            - name: http
-              containerPort: 80
-              protocol: TCP
-          livenessProbe:
-            httpGet:
-              path: /
-              port: http
-          readinessProbe:
-            httpGet:
-              path: /
-              port: http
-          resources:
-            {{- toYaml .Values.resources | nindent 12 }}
-      {{- with .Values.nodeSelector }}
-      nodeSelector:
-        {{- toYaml . | nindent 8 }}
-      {{- end }}
-    {{- with .Values.affinity }}
-      affinity:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
-    {{- with .Values.tolerations }}
-      tolerations:
-        {{- toYaml . | nindent 8 }}
-    {{- end }}
+      - name: gs-rest-service-{{.Release.Name}}
+        image: 'avengersx.azurecr.io/gs-rest-service:latest'
+        ports:
+        - containerPort: 80
+        env:
+        - name: TITLE
+          value: {{ .Values.title }}
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+spec:
+  type: {{ .Values.serviceType }}
+  ports:
+  - port: 80
+  selector:
+    app: gs-rest-service-{{.Release.Name}}
