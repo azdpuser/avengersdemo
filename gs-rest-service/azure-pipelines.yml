@@ -32,8 +32,8 @@ steps:
 
 - task: Gradle@2
   inputs:
-    workingDirectory: '$(system.defaultWorkingDirectory)/gs-rest-service'
-    gradleWrapperFile: '$(system.defaultWorkingDirectory)/gs-rest-service/gradlew'
+    workingDirectory: '$(system.defaultWorkingDirectory)'
+    gradleWrapperFile: '$(system.defaultWorkingDirectory)/gradlew'
     gradleOptions: '-Xmx1024m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
@@ -44,7 +44,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '$(system.defaultWorkingDirectory)/gs-rest-service/build/libs/'
+    SourceFolder: '$(system.defaultWorkingDirectory)/build/libs/'
     Contents: '*.jar'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
@@ -59,7 +59,7 @@ steps:
   inputs:
     azureSubscriptionEndpoint: $(acrServiceConnection)
     azureContainerRegistry: $(containerRegistry)
-    dockerFile: '**/gs-rest-service/dockerfile'
+    dockerFile: '**/dockerfile'
     imageName: '$(fullImageName)'
     includeLatestTag: true
 
@@ -90,7 +90,7 @@ steps:
     azureResourceGroup: $(k8sResourceGroup)
     kubernetesCluster: $(k8sCluster)
     command: package
-    chartPath: '**/charts/gs-rest-service'
+    chartPath: '**/charts/'
 
 - task: AzureCLI@1
   displayName: 'Helm Push'
