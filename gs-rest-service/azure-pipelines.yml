@@ -32,8 +32,8 @@ steps:
 
 - task: Gradle@2
   inputs:
-    workingDirectory: '**/gs-rest-service'
-    gradleWrapperFile: '**/gs-rest-service/gradlew'
+    workingDirectory: '$(system.defaultWorkingDirectory)/gs-rest-service'
+    gradleWrapperFile: '$(system.defaultWorkingDirectory)/gs-rest-service/gradlew'
     gradleOptions: '-Xmx1024m'
     javaHomeOption: 'JDKVersion'
     jdkVersionOption: '1.8'
@@ -44,7 +44,7 @@ steps:
 
 - task: CopyFiles@2
   inputs:
-    SourceFolder: '**/gs-rest-service/build/libs/'
+    SourceFolder: '$(system.defaultWorkingDirectory)/gs-rest-service/build/libs/'
     Contents: '*.jar'
     TargetFolder: '$(Build.ArtifactStagingDirectory)'
 
